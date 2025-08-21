@@ -1,12 +1,14 @@
 package ru.skypro.homework.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class Ads {
-    private Integer author;
-    private String image;
-    private Integer pk;
-    private Integer price;
-    private String title;
+    @Schema(description = "общее количество объявлений")
+    private int count;
+    private List<Ad> results;
+
 }

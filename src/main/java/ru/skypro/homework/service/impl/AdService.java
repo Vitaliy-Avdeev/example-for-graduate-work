@@ -2,8 +2,8 @@ package ru.skypro.homework.service.impl;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.dto.Ad;
 import ru.skypro.homework.dto.Ads;
+import ru.skypro.homework.dto.Ad;
 import ru.skypro.homework.dto.CreateOrUpdateAd;
 import ru.skypro.homework.dto.ExtendedAd;
 
@@ -11,11 +11,11 @@ import java.awt.*;
 
 @Service
 public class AdService {
-    public Ad getAllAds() {
+    public Ads getAllAds() {
         return null;
     }
 
-    public Ads addAd(CreateOrUpdateAd properties, MultipartFile image) {
+    public Ad addAd(CreateOrUpdateAd properties, MultipartFile image) {
         return null;
     }
 
@@ -30,11 +30,11 @@ public class AdService {
     public void removeAd(Integer id) {
     }
 
-    public Ads updateDto(Integer id, CreateOrUpdateAd createAdsDto) {
+    public Ad updateDto(Integer id, CreateOrUpdateAd createAdsDto) {
         return null;
     }
 
-    public Ad getAdsMe() {
+    public Ads getAdsMe() {
         return null;
     }
 

@@ -9,16 +9,14 @@ import java.awt.*;
 
 @Service
 public class UserService {
-    public boolean setPassword(NewPassword newPassword) {
-        return false;
+    public void setPassword(NewPassword newPassword) {
     }
 
     public UserDto getUser() {
         return null;
     }
 
-    public boolean updateUser(UserDto user) {
-        return false;
+    public void updateUser(UserDto user) {
     }
 
     public void updateUserImage(MultipartFile file) {

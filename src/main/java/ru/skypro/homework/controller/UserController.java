@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.NewPassword;
@@ -17,7 +17,7 @@ import ru.skypro.homework.dto.UserDto;
 import ru.skypro.homework.service.impl.UserService;
 
 import java.awt.*;
-import java.io.IOException;
+
 
 @Slf4j
 @RestController
@@ -53,15 +53,12 @@ public class UserController {
                     )
             })
     @PostMapping("/set_password")
-    public ResponseEntity<?> setPassword(@RequestBody NewPassword newPassword) {
-
-        if (userService.setPassword(newPassword)) {
-            return ResponseEntity.ok().build();
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public void setPassword(@RequestBody NewPassword newPassword) {
+        userService.setPassword(newPassword);
+        {
         }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-
     }
-
 
     @Operation(summary = "Получить информацию об авторизованном пользователе",
             tags = "Пользователи",
@@ -80,8 +77,8 @@ public class UserController {
                     )
             })
     @GetMapping("/me")
-    public ResponseEntity<UserDto> getUser() {
-        return ResponseEntity.ok(userService.getUser());
+    public UserDto getUser() {
+        return userService.getUser();
     }
 
     @Operation(summary = "Обновление информации об авторизованном пользователе",
@@ -107,19 +104,19 @@ public class UserController {
                     )
             })
     @PatchMapping("/me")
-    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto user) {
-        if (userService.updateUser(user)) {
-            return ResponseEntity.ok(user);
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public UserDto updateUser(@RequestBody UserDto user) {
+        userService.updateUser(user);
+        {
         }
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        return user;
     }
-
     @Operation(summary = "Обновить аватар авторизованного пользователя",
             tags = "Пользователи",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     content = @Content(
                             mediaType = MediaType.MULTIPART_FORM_DATA_VALUE,
-                            schema = @Schema()     // TODO ???
+                            schema = @Schema()
                     )
             ),
             responses = {
@@ -133,11 +130,10 @@ public class UserController {
                     )
             })
     @PatchMapping(value = "me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> updateUserImage(@RequestParam("image") MultipartFile file) throws IOException {
 
+
+    public void updateUserImage(@RequestParam("image") MultipartFile file) {
         userService.updateUserImage(file);
-        return ResponseEntity.ok().build();
+
     }
-
-
 }

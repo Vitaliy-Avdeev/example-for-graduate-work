@@ -24,7 +24,6 @@ public class CommentService {
     }
 
     public Comment updateComment(Integer commentId, Comment commentDto) {
-
         return commentDto;
     }
 }
