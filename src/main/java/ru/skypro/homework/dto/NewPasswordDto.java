@@ -6,7 +6,7 @@ import lombok.Data;
 import javax.validation.constraints.Size;
 
 @Data
-public class NewPassword {
+public class NewPasswordDto {
     @Schema(description = "текущий пароль")
     @Size(min = 8, max = 16)
     private String currentPassword;

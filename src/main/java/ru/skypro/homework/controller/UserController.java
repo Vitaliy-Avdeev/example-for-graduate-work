@@ -11,12 +11,15 @@ import org.springframework.http.MediaType;
 
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.dto.NewPassword;
-import ru.skypro.homework.dto.UpdateUser;
+import ru.skypro.homework.dto.NewPasswordDto;
+import ru.skypro.homework.dto.UpdateUserDto;
 import ru.skypro.homework.dto.UserDto;
 import ru.skypro.homework.service.impl.UserService;
 
-import java.awt.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Slf4j
@@ -35,7 +38,7 @@ public class UserController {
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = NewPassword.class)
+                            schema = @Schema(implementation = NewPasswordDto.class)
                     )
             ),
             responses = {
@@ -54,7 +57,7 @@ public class UserController {
             })
     @PostMapping("/set_password")
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public void setPassword(@RequestBody NewPassword newPassword) {
+    public void setPassword(@RequestBody NewPasswordDto newPassword) {
         userService.setPassword(newPassword);
         {
         }
@@ -86,7 +89,7 @@ public class UserController {
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = UpdateUser.class)
+                            schema = @Schema(implementation = UpdateUserDto.class)
                     )
             ),
             responses = {
@@ -95,7 +98,7 @@ public class UserController {
                             description = "OK",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = UpdateUser.class)
+                                    schema = @Schema(implementation = UpdateUserDto.class)
                             )
                     ),
                     @ApiResponse(
@@ -107,10 +110,9 @@ public class UserController {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public UserDto updateUser(@RequestBody UserDto user) {
         userService.updateUser(user);
-        {
-        }
         return user;
     }
+
     @Operation(summary = "Обновить аватар авторизованного пользователя",
             tags = "Пользователи",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -131,9 +133,13 @@ public class UserController {
             })
     @PatchMapping(value = "me/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 
-
-    public void updateUserImage(@RequestParam("image") MultipartFile file) {
+    public void updateUserImage(@RequestParam("image") MultipartFile file) throws IOException {
         userService.updateUserImage(file);
+    }
 
+    @GetMapping("/image/{id}/from-db")
+    public Map<Integer, ArrayList<byte[]>> getUserImage(@PathVariable Integer id) {
+        userService.getUserImage(id);
+        return new HashMap<>();
     }
 }

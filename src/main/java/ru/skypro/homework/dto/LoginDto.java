@@ -6,7 +6,7 @@ import lombok.Data;
 import javax.validation.constraints.Size;
 
 @Data
-public class Login {
+public class LoginDto {
     @Schema(description = "логин")
     @Size(min = 4, max = 32)
     private String username;

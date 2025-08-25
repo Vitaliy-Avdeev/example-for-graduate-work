@@ -43,12 +43,12 @@ public class AdsController {
                             description = "OK",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = Ads.class)
+                                    schema = @Schema(implementation = AdsDto.class)
                             )
                     )
             })
     @GetMapping()
-    public Ads getAllAds() {
+    public AdsDto getAllAds() {
         return adService.getAllAds();
     }
 
@@ -57,7 +57,7 @@ public class AdsController {
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     content = @Content(
                             mediaType = MediaType.MULTIPART_FORM_DATA_VALUE,
-                            schema = @Schema(implementation = CreateOrUpdateAd.class)
+                            schema = @Schema(implementation = CreateOrUpdateAdDto.class)
                     )
             ),
             responses = {
@@ -66,7 +66,7 @@ public class AdsController {
                             description = "Created",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = Ad.class)
+                                    schema = @Schema(implementation = AdDto.class)
                             )
                     ),
                     @ApiResponse(
@@ -75,8 +75,8 @@ public class AdsController {
                     )
             })
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Ad addAd(@RequestPart("properties") CreateOrUpdateAd properties,
-                    @RequestPart("image") MultipartFile image)  {
+    public AdDto addAd(@RequestPart("properties") CreateOrUpdateAdDto properties,
+                       @RequestPart("image") MultipartFile image) throws IOException {
         return adService.addAd(properties, image);
     }
 
@@ -97,7 +97,7 @@ public class AdsController {
                             description = "OK",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = Comments.class)
+                                    schema = @Schema(implementation = CommentsDto.class)
                             )
                     ),
                     @ApiResponse(
@@ -110,8 +110,10 @@ public class AdsController {
                     )
             })
     @GetMapping("{id}/comments")
-    public Comments getComments(@PathVariable Integer id) {
+    public CommentsDto getComments(@PathVariable Integer id) {
         return commentService.getComments(id);
+
+
     }
 
     @Operation(summary = "Добавить комментарий к объявлению",
@@ -119,7 +121,7 @@ public class AdsController {
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = CreateOrUpdateComment.class)
+                            schema = @Schema(implementation = CreateOrUpdateCommentDto.class)
                     )
             ),
             parameters = {
@@ -136,7 +138,7 @@ public class AdsController {
                             description = "OK",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = Comment.class)
+                                    schema = @Schema(implementation = CommentDto.class)
                             )
                     ),
                     @ApiResponse(
@@ -150,7 +152,8 @@ public class AdsController {
             })
     @PostMapping("{id}/comments")
     @ResponseStatus(HttpStatus.CREATED)
-    public Comment addComment(@PathVariable Integer id, @RequestBody CreateOrUpdateComment createCommentDto) {
+    public CommentDto addComment(@PathVariable Integer id, @RequestBody CreateOrUpdateCommentDto createCommentDto) {
+
         return commentService.addComment(id, createCommentDto);
     }
 
@@ -170,7 +173,7 @@ public class AdsController {
                             description = "OK",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    array = @ArraySchema(schema = @Schema(implementation = ExtendedAd.class))
+                                    array = @ArraySchema(schema = @Schema(implementation = ExtendedAdDto.class))
                             )
                     ),
                     @ApiResponse(
@@ -183,7 +186,7 @@ public class AdsController {
                     )
             })
     @GetMapping("{id}")
-    public ExtendedAd getAds(@PathVariable Integer id) {
+    public ExtendedAdDto getAds(@PathVariable Integer id) {
         return adService.getAds(id);
     }
 
@@ -226,7 +229,7 @@ public class AdsController {
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = CreateOrUpdateAd.class)
+                            schema = @Schema(implementation = CreateOrUpdateAdDto.class)
                     )
             ),
             parameters = {
@@ -243,7 +246,7 @@ public class AdsController {
                             description = "OK",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = Ad.class)
+                                    schema = @Schema(implementation = AdDto.class)
                             )
                     ),
                     @ApiResponse(
@@ -257,7 +260,7 @@ public class AdsController {
             })
     @PatchMapping("{id}")
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public Ad updateAds(@PathVariable Integer id, @RequestBody CreateOrUpdateAd createAdsDto) {
+    public AdDto updateAds(@PathVariable Integer id, @RequestBody CreateOrUpdateAdDto createAdsDto) {
         return adService.updateDto(id, createAdsDto);
     }
 
@@ -306,7 +309,7 @@ public class AdsController {
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = CreateOrUpdateComment.class)
+                            schema = @Schema(implementation = CreateOrUpdateCommentDto.class)
                     )
             ),
             parameters = {
@@ -329,7 +332,7 @@ public class AdsController {
                             description = "OK",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = Comment.class)
+                                    schema = @Schema(implementation = CommentDto.class)
                             )
                     ),
                     @ApiResponse(
@@ -347,7 +350,7 @@ public class AdsController {
             })
     @PatchMapping("{adId}/comments/{commentId}")
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public Comment updateComment(@PathVariable Integer adId, @PathVariable Integer commentId, @RequestBody Comment commentDto) {
+    public CommentDto updateComment(@PathVariable Integer adId, @PathVariable Integer commentId, @RequestBody CommentDto commentDto) {
         return commentService.updateComment(commentId, commentDto);
     }
 
@@ -359,7 +362,7 @@ public class AdsController {
                             description = "OK",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    array = @ArraySchema(schema = @Schema(implementation = Ad.class))
+                                    array = @ArraySchema(schema = @Schema(implementation = AdDto.class))
                             )
                     ),
                     @ApiResponse(
@@ -368,7 +371,7 @@ public class AdsController {
                     )
             })
     @GetMapping("me")
-    public Ads getAdsMe() {
+    public AdsDto getAdsMe() {
         return adService.getAdsMe();
     }
 
@@ -410,9 +413,17 @@ public class AdsController {
                             description = "Not found"
                     )
             })
+
     @PatchMapping(value = "{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Map<Integer, ArrayList<byte[]>> updateImage(@PathVariable Integer id, @RequestParam MultipartFile image) {
+
+    public Map<Integer, ArrayList<byte[]>> updateImage(@PathVariable Integer id, @RequestParam MultipartFile image) throws IOException {
         adService.updateAdImage(id, image);
+        return new HashMap<>();
+    }
+
+    @GetMapping(value = "/image/{id}/from-db", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Map<Integer, ArrayList<byte[]>> getAdImage(@PathVariable Integer id) {
+        adService.getAdImage(id);
         return new HashMap<>();
     }
 

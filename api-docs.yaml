@@ -16,7 +16,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NewPassword'
+              $ref: '#/components/schemas/NewPasswordDto'
         required: true
       responses:
         "200":
@@ -35,7 +35,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Register'
+              $ref: '#/components/schemas/RegisterDto'
         required: true
       responses:
         "201":
@@ -60,7 +60,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Login'
+              $ref: '#/components/schemas/LoginDto'
         required: true
       responses:
         "200":
@@ -87,7 +87,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Ads'
+                $ref: '#/components/schemas/AdsDto'
     post:
       tags:
       - Объявления
@@ -97,20 +97,20 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/CreateOrUpdateAd'
+              $ref: '#/components/schemas/CreateOrUpdateAdDto'
       responses:
         "201":
           description: Created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Ad'
+                $ref: '#/components/schemas/AdDto'
         "401":
           description: Unauthorized
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Ads'
+                $ref: '#/components/schemas/AdDto'
   /ads/{id}/comments:
     get:
       tags:
@@ -130,19 +130,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Comments'
+                $ref: '#/components/schemas/CommentsDto'
         "401":
           description: Unauthorized
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Comments'
+                $ref: '#/components/schemas/CommentsDto'
         "404":
           description: Not found
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Comments'
+                $ref: '#/components/schemas/CommentsDto'
     post:
       tags:
       - Комментарии
@@ -159,7 +159,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateOrUpdateComment'
+              $ref: '#/components/schemas/CreateOrUpdateCommentDto'
         required: true
       responses:
         "200":
@@ -167,25 +167,25 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Comment'
+                $ref: '#/components/schemas/CommentDto'
         "401":
           description: Unauthorized
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Comment'
+                $ref: '#/components/schemas/CommentDto'
         "404":
           description: Not found
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Comment'
+                $ref: '#/components/schemas/CommentDto'
         "201":
           description: Created
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Comment'
+                $ref: '#/components/schemas/CommentDto'
   /users/me:
     get:
       tags:
@@ -214,7 +214,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateUser'
+              $ref: '#/components/schemas/UpdateUserDto'
         required: true
       responses:
         "200":
@@ -222,7 +222,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UpdateUser'
+                $ref: '#/components/schemas/UpdateUserDto'
         "401":
           description: Unauthorized
           content:
@@ -272,19 +272,19 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ExtendedAd'
+                  $ref: '#/components/schemas/ExtendedAdDto'
         "401":
           description: Unauthorized
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ExtendedAd'
+                $ref: '#/components/schemas/ExtendedAdDto'
         "404":
           description: Not found
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/ExtendedAd'
+                $ref: '#/components/schemas/ExtendedAdDto'
     delete:
       tags:
       - Объявления
@@ -322,7 +322,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateOrUpdateAd'
+              $ref: '#/components/schemas/CreateOrUpdateAdDto'
         required: true
       responses:
         "200":
@@ -330,19 +330,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Ad'
+                $ref: '#/components/schemas/AdDto'
         "401":
           description: Unauthorized
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Ads'
+                $ref: '#/components/schemas/AdDto'
         "403":
           description: Forbidden
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Ads'
+                $ref: '#/components/schemas/AdDto'
   /ads/{id}/image:
     patch:
       tags:
@@ -374,10 +374,43 @@ paths:
             application/octet-stream: {}
         "401":
           description: Unauthorized
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: array
+                  items:
+                    type: array
+                    items:
+                      type: string
+                      format: byte
         "403":
           description: Forbidden
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: array
+                  items:
+                    type: array
+                    items:
+                      type: string
+                      format: byte
         "404":
           description: Not found
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: array
+                  items:
+                    type: array
+                    items:
+                      type: string
+                      format: byte
   /ads/{adId}/comments/{commentId}:
     delete:
       tags:
@@ -430,7 +463,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateOrUpdateComment'
+              $ref: '#/components/schemas/CreateOrUpdateCommentDto'
         required: true
       responses:
         "200":
@@ -438,25 +471,51 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Comment'
+                $ref: '#/components/schemas/CommentDto'
         "401":
           description: Unauthorized
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Comment'
+                $ref: '#/components/schemas/CommentDto'
         "403":
           description: Forbidden
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Comment'
+                $ref: '#/components/schemas/CommentDto'
         "404":
           description: Not found
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Comment'
+                $ref: '#/components/schemas/CommentDto'
+  /users/image/{id}/from-db:
+    get:
+      tags:
+      - user-controller
+      operationId: getUserImage
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: array
+                  items:
+                    type: array
+                    items:
+                      type: string
+                      format: byte
   /ads/me:
     get:
       tags:
@@ -471,16 +530,42 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Ads'
+                  $ref: '#/components/schemas/AdDto'
         "401":
           description: Unauthorized
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/Ad'
+                $ref: '#/components/schemas/AdsDto'
+  /ads/image/{id}/from-db:
+    get:
+      tags:
+      - ads-controller
+      operationId: getAdImage
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: array
+                  items:
+                    type: array
+                    items:
+                      type: string
+                      format: byte
 components:
   schemas:
-    NewPassword:
+    NewPasswordDto:
       type: object
       properties:
         currentPassword:
@@ -493,7 +578,7 @@ components:
           minLength: 8
           type: string
           description: новый пароль
-    Register:
+    RegisterDto:
       type: object
       properties:
         username:
@@ -526,7 +611,7 @@ components:
           enum:
           - USER
           - ADMIN
-    Login:
+    LoginDto:
       type: object
       properties:
         username:
@@ -539,7 +624,7 @@ components:
           minLength: 8
           type: string
           description: пароль
-    CreateOrUpdateAd:
+    CreateOrUpdateAdDto:
       type: object
       properties:
         title:
@@ -556,18 +641,7 @@ components:
           minLength: 8
           type: string
           description: описание объявления
-    Ad:
-      type: object
-      properties:
-        count:
-          type: integer
-          description: общее количество объявлений
-          format: int32
-        results:
-          type: array
-          items:
-            $ref: '#/components/schemas/Ads'
-    Ads:
+    AdDto:
       type: object
       properties:
         author:
@@ -588,7 +662,7 @@ components:
         title:
           type: string
           description: заголовок объявления
-    CreateOrUpdateComment:
+    CreateOrUpdateCommentDto:
       type: object
       properties:
         text:
@@ -596,7 +670,7 @@ components:
           minLength: 8
           type: string
           description: текст комментария
-    Comment:
+    CommentDto:
       type: object
       properties:
         author:
@@ -621,7 +695,7 @@ components:
         text:
           type: string
           description: текст комментария
-    UpdateUser:
+    UpdateUserDto:
       type: object
       properties:
         firstName:
@@ -667,7 +741,18 @@ components:
           enum:
           - USER
           - ADMIN
-    ExtendedAd:
+    AdsDto:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: общее количество объявлений
+          format: int32
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdDto'
+    ExtendedAdDto:
       type: object
       properties:
         pk:
@@ -699,7 +784,7 @@ components:
         title:
           type: string
           description: заголовок объявления
-    Comments:
+    CommentsDto:
       type: object
       properties:
         count:
@@ -709,4 +794,4 @@ components:
         results:
           type: array
           items:
-            $ref: '#/components/schemas/Comment'
+            $ref: '#/components/schemas/CommentDto'
